@@ -1,0 +1,13 @@
+__pycache__/
+.vscode/
+.ipynb_checkpoints
+configs/*.json
+data/addition/*.txt
+data/shakespeare/train*.txt
+data/shakespeare/val*.txt
+results/*/*.txt
+*wandb
+models/*.pt
+testing/models/*.pt
+*.ipynb
+results.tar.gz
