@@ -11,6 +11,7 @@ class Config:
     decoder: bool = True
     dropout: float = 0.0
     eval_interval: int = 100
+    eval_stride: int = 1
     lr_decay_iters: int = 5000
     max_evals_without_improving: int = 1000
     max_iters: int = 5000

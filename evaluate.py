@@ -32,8 +32,8 @@ def evaluate(config: Config, env: Environment):
     model.eval()
 
     results = torch.zeros(config.n_digits_test, config.n_digits_test)
-    for i in trange(config.n_digits_test, desc="i"):
-        for j in trange(config.n_digits_test, desc="j"):
+    for i in trange(0, config.n_digits_test, config.eval_stride, desc="i"):
+        for j in trange(0, config.n_digits_test, config.eval_stride, desc="j"):
             x, y, forward_idxs = data_generator.generate_batch((i + 1, j + 1))
 
             x = x[:, : i + j + 4].to(env.device)
