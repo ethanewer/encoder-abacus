@@ -66,8 +66,9 @@ class AbacusTransformer(nn.Module):
     ) -> Tensor:
         T = input_ids.shape[1]
         assert T <= self.config.n_positions
-        position_ids = torch.arange(0, T, dtype=torch.int64, device=input_ids.device)
-        x = self.wte(input_ids) + self.wpe(position_ids) + self.abacus(input_ids)
+        # position_ids = torch.arange(0, T, dtype=torch.int64, device=input_ids.device)
+        # x = self.wte(input_ids) + self.wpe(position_ids) + self.abacus(input_ids)
+        x = self.wte(input_ids) + self.abacus(input_ids)
         if decoder:
             return self.__decoder_forward(x)
         else:
