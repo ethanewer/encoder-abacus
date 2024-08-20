@@ -12,7 +12,7 @@ from util import Config, Environment
 def evaluate(config: Config, env: Environment):
     env.seed_everything(config.seed)
 
-    data_generator = AdditionGenerator(config.n_digits_test, config.test_batch_size)
+    data_generator = AdditionGenerator(config.n_digits_test, 1)
 
     model_config = TransformerConfig(
         digit_ids=[data_generator.char2int[str(i)] for i in range(10)],
@@ -31,31 +31,32 @@ def evaluate(config: Config, env: Environment):
     model.load_state_dict(checkpoint["model"])
     model.eval()
 
-    results = torch.zeros(config.n_digits_test, config.n_digits_test)
-    for i in trange(config.n_digits_test, desc="i"):
-        for j in trange(config.n_digits_test, desc="j"):
-            x, y, forward_idxs = data_generator.generate_batch((i + 1, j + 1))
+    i = 3
+    j = 3
 
-            x = x[:, : i + j + 4].to(env.device)
-            forward_idxs = forward_idxs[:-1]
-            assert len(forward_idxs) == max(i + 1, j + 1) + 1
+    x, y, forward_idxs = data_generator.generate_batch((i + 1, j + 1))
 
-            with env.context:
-                y_hat = model.generate(
-                    x,
-                    max_new_tokens=len(forward_idxs),
-                    decoder=config.decoder,
-                )[:, 1:]
+    x = x[:, : i + j + 4].to(env.device)
+    forward_idxs = forward_idxs[:-1]
+    assert len(forward_idxs) == max(i + 1, j + 1) + 1
 
-            y_hat = y_hat.cpu()
+    with env.context:
+        y_hat = model.generate(
+            x,
+            max_new_tokens=len(forward_idxs),
+            decoder=config.decoder,
+        )[:, 1:]
 
-            y_hat = y_hat[:, forward_idxs]
-            y = y[:, forward_idxs]
+    y_hat = y_hat.cpu()
 
-            results[i, j] = torch.mean(torch.all(y_hat == y, dim=1).float()).item()
+    y_hat = y_hat[:, forward_idxs]
+    y = y[:, forward_idxs]
 
-    save_path = os.path.join(config.results_dir, config.checkpoint_name)
-    torch.save({"results": results}, save_path)
+    print(y_hat)
+    print(y)
+
+
+
 
 
 if __name__ == "__main__":
