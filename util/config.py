@@ -24,9 +24,6 @@ class Config:
     n_embd: int = 384
     n_head: int = 6
     n_layer: int = 6
-    n_test: int = 75000
-    n_train: int = 10000
-    n_val: int = 10000
     name: str = ""
     results_dir: str = "results"
     resume: bool = False

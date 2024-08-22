@@ -21,19 +21,23 @@ LARGE: dict[str, int] = {
 
 BASE_CONFIG: dict[str, bool | int | float | str] = {
     "block_size": 512,
-    "n_digits_train": 20,
-    "n_digits_test": 71,
-    "max_iters": 30000,
-    "lr_decay_iters": 30000,
-    "decoder": False,
+    "n_digits_test": 80,
+    "max_iters": 50000,
+    "lr_decay_iters": 50000,
     "eval_interval": 100,
-    "eval_stride": 10,
+    "eval_stride": 5,
 }
 
 if __name__ == "__main__":
-    config = copy.deepcopy(BASE_CONFIG | MEDIUM)
-    config["name"] = "medium_20_digit_encoder"
+    for size, size_name in [(SMALL, "small"), (MEDIUM, "medium"), (LARGE, "large")]:
+        for decoder in [True, False]:
+            for n_digits_train in [10, 20]:
+                name = f"{size_name}_{'decoder' if decoder else 'encoder'}_{n_digits_train}"
+                config = copy.deepcopy(BASE_CONFIG | size)
+                config["name"] = name
+                config["decoder"] = decoder
+                config["n_digits_train"] = n_digits_train
 
-    config_path = "configs/medium_20_encoder.json"
-    with open(config_path, "w") as f:
-        json.dump(config, f)
+                config_path = f"configs/{name}.json"
+                with open(config_path, "w") as f:
+                    json.dump(config, f)
