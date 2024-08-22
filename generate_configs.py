@@ -23,17 +23,17 @@ BASE_CONFIG: dict[str, bool | int | float | str] = {
     "block_size": 512,
     "n_digits_train": 20,
     "n_digits_test": 71,
-    "max_iters": 25000,
-    "lr_decay_iters": 25000,
-    "decoder": True,
+    "max_iters": 30000,
+    "lr_decay_iters": 30000,
+    "decoder": False,
     "eval_interval": 100,
     "eval_stride": 10,
 }
 
 if __name__ == "__main__":
     config = copy.deepcopy(BASE_CONFIG | MEDIUM)
-    config["name"] = "medium_20_digit"
+    config["name"] = "medium_20_digit_encoder"
 
-    config_path = "configs/medium_20_digit.json"
+    config_path = "configs/medium_20_encoder.json"
     with open(config_path, "w") as f:
         json.dump(config, f)
