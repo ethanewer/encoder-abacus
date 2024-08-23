@@ -1,4 +1,5 @@
 import math
+import random
 from typing import Optional, Sequence
 
 import torch
@@ -66,9 +67,14 @@ class AbacusTransformer(nn.Module):
     ) -> Tensor:
         T = input_ids.shape[1]
         assert T <= self.config.n_positions
-        # position_ids = torch.arange(0, T, dtype=torch.int64, device=input_ids.device)
-        # x = self.wte(input_ids) + self.wpe(position_ids) + self.abacus(input_ids)
+
         x = self.wte(input_ids) + self.abacus(input_ids)
+
+        if self.config.use_wpe:
+            position_ids = torch.arange(T, device=input_ids.device)
+            position_ids += random.randint(0, self.config.n_positions - T)
+            x += self.wpe(position_ids)
+
         if decoder:
             return self.__decoder_forward(x)
         else:

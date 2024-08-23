@@ -29,6 +29,7 @@ class Config:
     resume: bool = False
     seed: int = 42
     test_batch_size: int = 1024
+    use_wpe: bool = True
     warmup_iters: int = 100
     weight_decay: float = 0.1
 

@@ -14,6 +14,7 @@ class TransformerConfig:
     n_head: int = 12
     n_layer: int = 12
     n_positions: int = 1024
+    use_wpe: bool = True
     vocab_size: int = 50257
 
 
