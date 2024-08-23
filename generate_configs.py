@@ -26,25 +26,11 @@ BASE_CONFIG: dict[str, bool | int | float | str] = {
     "lr_decay_iters": 50000,
     "eval_interval": 100,
     "eval_stride": 5,
-    "resume": True,
 }
 
 if __name__ == "__main__":
-    # for size, size_name in [(SMALL, "small"), (MEDIUM, "medium"), (LARGE, "large")]:
-    #     for decoder in [True, False]:
-    #         for n_digits_train in [10, 20]:
-    #             name = f"{size_name}_{'decoder' if decoder else 'encoder'}_{n_digits_train}"
-    #             config = copy.deepcopy(BASE_CONFIG | size)
-    #             config["name"] = name
-    #             config["decoder"] = decoder
-    #             config["n_digits_train"] = n_digits_train
-
-    #             config_path = f"configs/{name}.json"
-    #             with open(config_path, "w") as f:
-    #                 json.dump(config, f)
-
-    for size, size_name in [(LARGE, "large")]:
-        for decoder in [False]:
+    for size, size_name in [(SMALL, "small"), (MEDIUM, "medium")]:
+        for decoder in [True, False]:
             for n_digits_train in [10, 20]:
                 name = f"{size_name}_{'decoder' if decoder else 'encoder'}_{n_digits_train}"
                 config = copy.deepcopy(BASE_CONFIG | size)
@@ -55,3 +41,4 @@ if __name__ == "__main__":
                 config_path = f"configs/{name}.json"
                 with open(config_path, "w") as f:
                     json.dump(config, f)
+
