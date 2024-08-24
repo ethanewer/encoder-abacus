@@ -26,13 +26,14 @@ BASE_CONFIG: dict[str, bool | int | float | str] = {
     "lr_decay_iters": 50000,
     "eval_interval": 100,
     "eval_stride": 5,
+    "use_wpe": True,
 }
 
 if __name__ == "__main__":
-    for size, size_name in [(SMALL, "small"), (MEDIUM, "medium")]:
+    for size, size_name in [(SMALL, "small"), (MEDIUM, "medium"), (LARGE, "large")]:
         for decoder in [True, False]:
-            for n_digits_train in [10, 20]:
-                name = f"{size_name}_{'decoder' if decoder else 'encoder'}_{n_digits_train}"
+            for n_digits_train in [20]:
+                name = f"{size_name}_{'decoder' if decoder else 'encoder'}_{n_digits_train}_with_wpe"
                 config = copy.deepcopy(BASE_CONFIG | size)
                 config["name"] = name
                 config["decoder"] = decoder
